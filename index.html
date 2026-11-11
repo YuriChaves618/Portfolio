@@ -260,7 +260,18 @@
         oportunidades profissionais? Entre em contato comigo.
       </p>
 
-      <form action="#" method="post" class="formulario">
+      <div class="aviso-demo" id="aviso-demo">
+        <p>
+          <strong>Formulário em modo de demonstração.</strong>
+          Ele simula o envio e <strong>nenhum e-mail é enviado</strong>.
+          Para falar comigo de verdade, escreva para
+          <a href="mailto:yuricabral08@gmail.com">yuricabral08@gmail.com</a>
+          ou use o <a href="https://github.com/YuriChaves618" target="_blank" rel="noopener noreferrer">GitHub</a>.
+        </p>
+      </div>
+
+      <form id="form-contato" class="formulario" method="post" action="#" novalidate
+            aria-describedby="aviso-demo" data-estado="edicao">
 
         <div class="campo">
           <label for="nome">Nome</label>
@@ -271,7 +282,9 @@
             placeholder="Seu nome"
             autocomplete="name"
             required
+            aria-describedby="erro-nome"
           >
+          <p class="erro-campo" id="erro-nome" hidden></p>
         </div>
 
         <div class="campo">
@@ -283,7 +296,9 @@
             placeholder="seuemail@exemplo.com"
             autocomplete="email"
             required
+            aria-describedby="erro-email"
           >
+          <p class="erro-campo" id="erro-email" hidden></p>
         </div>
 
         <div class="campo">
@@ -294,7 +309,9 @@
             name="assunto"
             placeholder="Assunto da mensagem"
             required
+            aria-describedby="erro-assunto"
           >
+          <p class="erro-campo" id="erro-assunto" hidden></p>
         </div>
 
         <div class="campo">
@@ -305,18 +322,36 @@
             rows="5"
             placeholder="Escreva sua mensagem aqui"
             required
+            aria-describedby="erro-mensagem"
           ></textarea>
+          <p class="erro-campo" id="erro-mensagem" hidden></p>
         </div>
 
-        <button type="submit" class="botao">
+        <fieldset class="controle-teste">
+          <legend>Controle de teste da demonstração</legend>
+          <p class="ajuda">Escolha como a simulação deve terminar.</p>
+          <label>
+            <input type="radio" name="resultado-simulado" value="sucesso" checked>
+            Simular sucesso
+          </label>
+          <label>
+            <input type="radio" name="resultado-simulado" value="falha">
+            Simular falha
+          </label>
+        </fieldset>
+
+        <button type="submit" class="botao" id="botao-enviar">
           Enviar mensagem
         </button>
+
+        <div id="status-form" class="status" role="status" aria-live="polite" aria-atomic="true"></div>
 
       </form>
 
       <p>
-        Você também pode entrar em contato pelas minhas redes profissionais,
-        disponíveis na seção de informações complementares.
+        Você também pode entrar em contato diretamente pelo e-mail
+        <a href="mailto:yuricabral08@gmail.com">yuricabral08@gmail.com</a>
+        ou pelas demais informações na seção de informações complementares.
       </p>
     </section>
 
@@ -366,7 +401,8 @@
 
       
       <li>
-        <strong>Email de contato:</strong>yuricabral08@gmail.com
+        <strong>Email de contato:</strong>
+        <a href="mailto:yuricabral08@gmail.com">yuricabral08@gmail.com</a>
       </li>
 
       <li>
@@ -382,7 +418,7 @@
     </p>
 
     <p>
-      Desenvolvido com HTML e CSS.
+      Desenvolvido com HTML, CSS e JavaScript.
     </p>
 
     <p>
@@ -390,5 +426,6 @@
     </p>
   </footer>
 
+  <script src="script.js"></script>
 </body>
 </html>

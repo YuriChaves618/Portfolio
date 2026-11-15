@@ -1,246 +1,441 @@
-/*
- * Formulário de contato — estados: edicao, erro-validacao, processando, sucesso, falha.
- *
- * IMPORTANTE:
- *  - Este portfólio é um site estático, sem back-end. Por isso o envio é uma
- *    SIMULAÇÃO: nenhum e-mail é enviado.
- *  - A validação feita aqui melhora a experiência, mas NÃO substitui a validação
- *    no servidor numa aplicação real.
- *  - Nunca coloque senhas, tokens ou chaves privadas neste arquivo: tudo o que
- *    está em JavaScript de navegador é público.
- *
- * Para usar um serviço real (ex.: um endpoint seu ou um serviço de formulários),
- * preencha ENDPOINT_ENVIO abaixo com uma URL pública. Quando preenchido, o
- * formulário passa a usar fetch() de verdade e o aviso de demonstração some.
- */
-const ENDPOINT_ENVIO = ""; // ex.: "https://seu-servico.exemplo/contato"
-const TEMPO_SIMULADO_MS = 1800;
-const TEMPO_LIMITE_MS = 10000;
-
-const form = document.getElementById("form-contato");
-const botao = document.getElementById("botao-enviar");
-const statusRegiao = document.getElementById("status-form");
-const avisoDemo = document.getElementById("aviso-demo");
-
-const TEXTO_BOTAO = {
-  padrao: "Enviar mensagem",
-  processando: "Enviando…",
-  retentar: "Tentar novamente",
-};
-
-const campos = {
-  nome: {
-    el: document.getElementById("nome"),
-    erro: document.getElementById("erro-nome"),
-    validar: (v) =>
-      v.length < 2 ? "Informe seu nome (mínimo de 2 caracteres)." : "",
+const P = [
+  {
+    t: "Aplicação Web / Consumo de API",
+    n: "Pokédex",
+    d: "Catálogo completo de Pokémon, da primeira à última geração, alimentado por consumo de API em tempo real. Inclui busca, sorteio aleatório, favoritos, comparador entre Pokémon e modo batalha.",
+    hl: "Destaque: integração com API — requisições assíncronas, tratamento de respostas e renderização dinâmica dos dados.",
+    s: ["JavaScript", "API REST", "Fetch / async-await", "HTML", "CSS", "Vercel"],
+    i: "img/pokedex.png",
+    u: "https://pokedex-pi-eosin.vercel.app/",
+    c: "Pokédex"
   },
-  email: {
-    el: document.getElementById("email"),
-    erro: document.getElementById("erro-email"),
-    validar: (v) => {
-      if (!v) return "Informe seu e-mail.";
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
-        ? ""
-        : "Informe um e-mail válido, como nome@exemplo.com.";
-    },
+  {
+    t: "Jogo Autoral / Dark Fantasy",
+    n: "When the Woods Remember",
+    d: "Jogo narrativo autoral de dark fantasy, criado e desenvolvido por mim. Tem capítulos, cenas com escolhas que direcionam a história, trilha sonora, interface própria, controle de áudio e opção de reiniciar cena ou capítulo.",
+    hl: "Destaque: narrativa interativa com sistema de cenas e escolhas, áudio e arte integrados.",
+    s: ["JavaScript", "HTML", "CSS", "Web Audio", "Vercel"],
+    i: "img/when-the-woods-remember.png",
+    u: "https://whentheforestremember.vercel.app/",
+    c: "When the Woods Remember"
   },
-  assunto: {
-    el: document.getElementById("assunto"),
-    erro: document.getElementById("erro-assunto"),
-    validar: (v) =>
-      v.length < 3 ? "Informe o assunto (mínimo de 3 caracteres)." : "",
+  {
+    t: "Aplicação Desktop / Gestão",
+    n: "Sistema de RH",
+    d: "Aplicação desktop em Java para gerenciar funcionários e seus dependentes, facilitando a organização e a consulta de informações.",
+    hl: "",
+    s: ["Java", "Java Swing", "MySQL", "Programação orientada a objetos"],
+    i: "img/sistema-de-rh.png",
+    u: "https://github.com/YuriChaves618/Sistema-de-RH",
+    c: "Sistema de RH",
+    g: 1
   },
-  mensagem: {
-    el: document.getElementById("mensagem"),
-    erro: document.getElementById("erro-mensagem"),
-    validar: (v) =>
-      v.length < 10 ? "Escreva uma mensagem com pelo menos 10 caracteres." : "",
+  {
+    t: "Portal Web / Jornalismo",
+    n: "Conecta TI",
+    d: "Newsletter dos cursos de T.I. do SENAI. Tem edições, painel administrativo, compartilhamento, geração de PDF e recursos de acessibilidade (alto contraste, ajuste de fonte e navegação por teclado). Utiliza o Supabase como banco de dados.",
+    hl: "Destaque: acessibilidade e páginas de privacidade e termos de uso.",
+    s: ["JavaScript", "HTML", "CSS", "Acessibilidade (WCAG)", "Supabase (banco de dados)", "Vercel"],
+    i: "img/conecta-ti.png",
+    u: "https://conecta-ti-bvgu.vercel.app/",
+    c: "Conecta TI"
   },
-};
-
-const modoDemo = !ENDPOINT_ENVIO;
-let estado = "edicao";
-
-if (!modoDemo) {
-  // Com serviço real configurado, não faz sentido mostrar o aviso nem o controle de teste.
-  avisoDemo.hidden = true;
-  form.querySelector(".controle-teste").hidden = true;
-}
-
-/* ---------- Estados ---------- */
-
-function definirEstado(novo) {
-  estado = novo;
-  form.dataset.estado = novo;
-  form.setAttribute("aria-busy", String(novo === "processando"));
-
-  const processando = novo === "processando";
-  // aria-disabled (e não disabled) mantém o foco no botão e o leitor de tela
-  // continua anunciando a região de status.
-  botao.setAttribute("aria-disabled", String(processando));
-  botao.textContent = processando
-    ? TEXTO_BOTAO.processando
-    : novo === "falha"
-      ? TEXTO_BOTAO.retentar
-      : TEXTO_BOTAO.padrao;
-
-  // Durante o processamento os dados não podem mudar.
-  Object.values(campos).forEach(({ el }) => (el.readOnly = processando));
-  form
-    .querySelectorAll('input[name="resultado-simulado"]')
-    .forEach((r) => (r.disabled = processando));
-}
-
-const ICONES = { info: "⏳", sucesso: "✔", erro: "✖", aviso: "⚠" };
-
-function mostrarStatus(tipo, titulo, detalhe) {
-  statusRegiao.className = "status status-" + tipo;
-  statusRegiao.replaceChildren();
-
-  const icone = document.createElement("span");
-  icone.className = "status-icone";
-  icone.setAttribute("aria-hidden", "true");
-  icone.textContent = ICONES[tipo];
-
-  const corpo = document.createElement("div");
-  const t = document.createElement("strong");
-  t.textContent = titulo;
-  corpo.append(t);
-  if (detalhe) {
-    const p = document.createElement("p");
-    p.textContent = detalhe;
-    corpo.append(p);
+  {
+    t: "Aplicação Web / Gestão de Startups",
+    n: "Avaliação de Startups",
+    d: "Plataforma de avaliação e gestão de startups, pensada para organizar critérios, acompanhar projetos e apoiar a tomada de decisão. Layout responsivo, com foco em uso no celular. Utiliza o Supabase como banco de dados.",
+    hl: "",
+    s: ["JavaScript", "HTML", "CSS", "Design responsivo", "Supabase (banco de dados)", "Vercel"],
+    i: "img/catapimbas.png",
+    u: "https://projeto-catapimbas.vercel.app/",
+    c: "Avaliação de Startups"
+  },
+  {
+    t: "Site Institucional / Comunidade",
+    n: "Clube D/S",
+    d: "Site de apresentação do Clube D/S do SENAI CIMATEC, o clube de programação na prática, criado para atrair e orientar novos membros. Utiliza o Supabase como banco de dados.",
+    hl: "",
+    s: ["JavaScript", "HTML", "CSS", "Design responsivo", "Supabase (banco de dados)", "Vercel"],
+    i: "img/clube-ds.png",
+    u: "https://dsclube.vercel.app/",
+    c: "Clube D/S"
   }
-  statusRegiao.append(icone, corpo);
-}
+];
 
-/* ---------- Validação ---------- */
+const I = {
+  code: '<path d="M8 8l-5 4 5 4M16 8l5 4-5 4"/>',
+  file: '<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5"/>',
+  db: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+  cube: '<path d="M12 2l9 5v10l-9 5-9-5V7zM12 12l9-5M12 12L3 7M12 12v10"/>',
+  layout: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
+  git: '<circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="8" r="2"/><path d="M6 8v8M18 10c0 4-6 3-12 6"/>',
+  tri: '<path d="M12 4l9 16H3z"/>',
+  pen: '<path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',
+  bolt: '<path d="M13 2L3 14h8l-1 8 10-12h-8z"/>',
+  gh: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 00-.9-2.6c3.1-.3 6.4-1.5 6.4-7a5.4 5.4 0 00-1.5-3.8 5 5 0 00-.1-3.7s-1.2-.3-3.9 1.5a13.4 13.4 0 00-7 0C6.3 1.5 5.1 1.8 5.1 1.8a5 5 0 00-.1 3.7 5.4 5.4 0 00-1.5 3.8c0 5.5 3.3 6.7 6.4 7a3.4 3.4 0 00-.9 2.6V22"/>'
+};
 
-function valorLimpo(campo) {
-  return campo.el.value.trim();
-}
+const S = [
+  ["Linguagens", [["HTML5", "file"], ["CSS3", "file"], ["JavaScript", "code"], ["Java", "code"], ["C", "code"], ["C++", "code"], ["Python", "code"]]],
+  ["Banco de dados e frameworks", [["PostgreSQL", "db"], ["MySQL", "db"], ["React", "cube"], ["Node.js", "cube"], ["Tailwind", "layout"], ["Bootstrap", "layout"]]],
+  ["Ferramentas e ecossistema", [["Vercel", "tri"], ["Supabase", "db"], ["Canva", "pen"], ["GitHub", "gh"], ["Notion", "file"], ["Git", "git"], ["Vite", "bolt"], ["Figma", "pen"]]]
+];
 
-function validarCampo(campo) {
-  const msg = campo.validar(valorLimpo(campo));
-  campo.erro.textContent = msg;
-  campo.erro.hidden = !msg;
-  if (msg) campo.el.setAttribute("aria-invalid", "true");
-  else campo.el.removeAttribute("aria-invalid");
-  return msg;
-}
+const stack = document.getElementById("stack");
+stack.innerHTML = S.map(([groupName, technologies]) => `
+  <p class="lbl">${groupName}</p>
+  <div class="chips">
+    ${technologies.map(([name, icon]) => `
+      <span class="chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[icon]}</svg>
+        ${name}
+      </span>
+    `).join("")}
+  </div>
+`).join("");
 
-function validarTudo() {
-  const invalidos = Object.values(campos).filter((c) => validarCampo(c));
-  return invalidos;
-}
+const projectList = document.getElementById("list");
+const PROJECT_FILTERS = {
+  categories: [
+    { label: "Aplicações web", matches: (project) => project.t.startsWith("Aplicação Web /") },
+    { label: "Aplicações desktop", matches: (project) => project.t.startsWith("Aplicação Desktop /") },
+    { label: "Jogos autorais", matches: (project) => project.t.startsWith("Jogo Autoral /") },
+    { label: "Portais web", matches: (project) => project.t.startsWith("Portal Web /") },
+    { label: "Sites institucionais", matches: (project) => project.t.startsWith("Site Institucional /") }
+  ],
+  technologies: [...new Set(P.flatMap((project) => project.s))]
+    .sort((first, second) => first.localeCompare(second, "pt-BR"))
+};
+const projectFilter = document.getElementById("project-filter");
+projectFilter.innerHTML = `
+  <option value="all">Todos</option>
+  <optgroup label="Categorias">
+    ${PROJECT_FILTERS.categories.map((filter, index) => `<option value="category:${index}">${filter.label}</option>`).join("")}
+  </optgroup>
+  <optgroup label="Tecnologias">
+    ${PROJECT_FILTERS.technologies.map((technology) => `<option value="technology:${encodeURIComponent(technology)}">${technology}</option>`).join("")}
+  </optgroup>
+`;
 
-Object.values(campos).forEach((campo) => {
-  // Corrige a mensagem de erro assim que a pessoa conserta o campo.
-  campo.el.addEventListener("input", () => {
-    if (campo.el.hasAttribute("aria-invalid")) validarCampo(campo);
+const renderProjects = () => {
+  const selectedFilter = projectFilter.value;
+  const visibleProjects = P.filter((project) => {
+    if (selectedFilter === "all") return true;
+
+    if (selectedFilter.startsWith("category:")) {
+      const categoryIndex = Number(selectedFilter.split(":")[1]);
+      return PROJECT_FILTERS.categories[categoryIndex]?.matches(project) ?? false;
+    }
+
+    if (selectedFilter.startsWith("technology:")) {
+      const technology = decodeURIComponent(selectedFilter.slice("technology:".length));
+      return project.s.includes(technology);
+    }
+
+    return true;
   });
+
+  projectList.setAttribute("aria-busy", "true");
+  projectList.innerHTML = visibleProjects.length
+    ? visibleProjects.map((project) => `
+      <article class="proj">
+        <div class="info">
+          <span class="tag">${project.t}</span>
+          <h3>${project.n}</h3>
+          <p>${project.d}</p>
+          ${project.hl ? `<p class="hl">${project.hl}</p>` : ""}
+          <div class="chips">
+            ${project.s.map((technology) => `<span class="chip">${technology}</span>`).join("")}
+          </div>
+          <div class="btns">
+            <a class="btn" href="${project.u}" target="_blank" rel="noopener">${project.g ? "Ver código" : "Ver projeto"} ↗</a>
+          </div>
+        </div>
+        <a class="shot" href="${project.u}" target="_blank" rel="noopener" aria-label="Abrir ${project.n}">
+          <i>● ● ● &nbsp; ${project.u.replace("https://", "")}</i>
+          <div>
+            <img src="${project.i}" alt="Prévia de ${project.n}" onerror="this.remove()">
+            ${project.c}
+          </div>
+        </a>
+      </article>
+    `).join("")
+    : '<p class="empty-projects" role="status">Nenhum projeto encontrado para este filtro.</p>';
+  projectList.setAttribute("aria-busy", "false");
+};
+
+projectFilter.addEventListener("change", renderProjects);
+renderProjects();
+
+const today = document.getElementById("today");
+const setDate = () => {
+  today.textContent = new Date()
+    .toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" })
+    .toUpperCase()
+    .replace(/\./g, "");
+};
+const updateDateAtMidnight = () => {
+  const now = new Date();
+  setDate();
+  const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 2);
+  setTimeout(updateDateAtMidnight, nextMidnight - now);
+};
+updateDateAtMidnight();
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) setDate();
 });
 
-/* ---------- Envio ---------- */
+const root = document.documentElement;
+const themeButton = document.getElementById("theme");
+themeButton.addEventListener("click", () => {
+  const currentTheme = root.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const switchToLight = currentTheme === "dark";
+  root.dataset.theme = switchToLight ? "light" : "dark";
+  themeButton.textContent = switchToLight ? "☾" : "☀";
+});
 
-function enviarSimulado(dados, resultado) {
-  // Demonstração: resolve ou rejeita de forma CONTROLADA pela escolha da pessoa.
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (resultado === "falha") {
-        reject(new Error("Falha simulada pelo controle de teste."));
-      } else {
-        resolve({ simulado: true });
-      }
-    }, TEMPO_SIMULADO_MS);
-  });
-}
+const CONTACT_URL = "https://onzcycauptumsuxqssbq.supabase.co/functions/v1/contact";
+const contactForm = document.getElementById("f");
+const nameField = document.getElementById("contact-name");
+const reasonField = document.getElementById("contact-reason");
+const otherSubjectWrap = document.getElementById("other-subject-field");
+const otherSubjectField = document.getElementById("other-subject");
+const messageField = document.getElementById("contact-message");
+const messageCounter = document.getElementById("message-counter");
 
-async function enviarReal(dados) {
-  const controle = new AbortController();
-  const timer = setTimeout(() => controle.abort(), TEMPO_LIMITE_MS);
-  try {
-    const resposta = await fetch(ENDPOINT_ENVIO, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(dados),
-      signal: controle.signal,
-    });
-    if (!resposta.ok) throw new Error("Resposta do servidor: " + resposta.status);
-    return resposta;
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-function enviarMensagem(dados) {
-  if (!modoDemo) return enviarReal(dados);
-  const escolhido = form.querySelector('input[name="resultado-simulado"]:checked');
-  return enviarSimulado(dados, escolhido ? escolhido.value : "sucesso");
-}
-
-form.addEventListener("submit", async (evento) => {
-  evento.preventDefault();
-
-  // Trava síncrona: cliques rápidos ou Enter repetido não iniciam outro envio.
-  if (estado === "processando") return;
-
-  const invalidos = validarTudo();
-  if (invalidos.length > 0) {
-    definirEstado("erro-validacao");
-    const n = invalidos.length;
-    mostrarStatus(
-      "erro",
-      "Não foi possível enviar.",
-      n === 1
-        ? "Corrija 1 campo indicado abaixo e tente de novo."
-        : "Corrija os " + n + " campos indicados abaixo e tente de novo."
-    );
-    invalidos[0].el.focus();
+const trimmedLength = (field) => field.value.trim().length;
+const setLengthRule = (field, minimum, maximum, label) => {
+  const value = field.value;
+  const length = value.trim().length;
+  if (!value) {
+    field.setCustomValidity("");
     return;
   }
+  if (length < minimum) {
+    field.setCustomValidity(`${label}: use pelo menos ${minimum} caracteres após remover espaços no início e no fim.`);
+  } else if (length > maximum) {
+    field.setCustomValidity(`${label}: use no máximo ${maximum} caracteres após remover espaços no início e no fim.`);
+  } else {
+    field.setCustomValidity("");
+  }
+};
 
-  const dados = {
-    nome: valorLimpo(campos.nome),
-    email: valorLimpo(campos.email),
-    assunto: valorLimpo(campos.assunto),
-    mensagem: valorLimpo(campos.mensagem),
+const updateNameValidity = () => setLengthRule(nameField, 3, 80, "O nome");
+const updateOtherSubjectValidity = () => {
+  if (reasonField.value !== "Outro") {
+    otherSubjectField.setCustomValidity("");
+    return;
+  }
+  setLengthRule(otherSubjectField, 5, 100, "O assunto adicional");
+};
+const updateMessageValidity = () => {
+  const length = trimmedLength(messageField);
+  messageCounter.textContent = `${length} / 1000 caracteres`;
+  setLengthRule(messageField, 30, 1000, "A mensagem");
+};
+const updateOtherSubjectVisibility = () => {
+  const showOtherSubject = reasonField.value === "Outro";
+  otherSubjectWrap.hidden = !showOtherSubject;
+  otherSubjectField.disabled = !showOtherSubject;
+  otherSubjectField.required = showOtherSubject;
+
+  if (!showOtherSubject) {
+    otherSubjectField.value = "";
+    otherSubjectField.setCustomValidity("");
+  } else {
+    updateOtherSubjectValidity();
+  }
+};
+
+nameField.addEventListener("input", updateNameValidity);
+nameField.addEventListener("change", updateNameValidity);
+otherSubjectField.addEventListener("input", updateOtherSubjectValidity);
+otherSubjectField.addEventListener("change", updateOtherSubjectValidity);
+messageField.addEventListener("input", updateMessageValidity);
+messageField.addEventListener("change", updateMessageValidity);
+reasonField.addEventListener("change", updateOtherSubjectVisibility);
+updateNameValidity();
+updateMessageValidity();
+updateOtherSubjectVisibility();
+
+contactForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  updateNameValidity();
+  updateOtherSubjectVisibility();
+  updateOtherSubjectValidity();
+  updateMessageValidity();
+
+  if (!contactForm.reportValidity()) return;
+
+  const formData = new FormData(contactForm);
+  if (formData.get("website")) return;
+
+  const reason = formData.get("reason").trim();
+  const subjectAdditional = reason === "Outro" ? formData.get("subjectAdditional").trim() : "";
+  const subject = reason === "Outro" ? `Outro — ${subjectAdditional}` : reason;
+  const payload = {
+    name: formData.get("n").trim(),
+    email: formData.get("e").trim(),
+    subject,
+    message: formData.get("m").trim()
   };
+  const status = document.getElementById("ok");
+  const submitButton = contactForm.querySelector('button[type="submit"]');
 
-  definirEstado("processando");
-  mostrarStatus(
-    "info",
-    "Enviando sua mensagem…",
-    modoDemo ? "Simulação em andamento. Aguarde." : "Aguarde a confirmação."
-  );
+  submitButton.disabled = true;
+  status.style.color = "#888";
+  status.textContent = "Enviando...";
 
   try {
-    await enviarMensagem(dados);
-    // Só aqui, após a operação concluir, mostramos sucesso e limpamos os campos.
-    form.reset();
-    Object.values(campos).forEach((c) => {
-      c.erro.hidden = true;
-      c.erro.textContent = "";
-      c.el.removeAttribute("aria-invalid");
+    const response = await fetch(CONTACT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
-    definirEstado("sucesso");
-    mostrarStatus(
-      "sucesso",
-      modoDemo ? "Simulação concluída com sucesso." : "Mensagem enviada com sucesso.",
-      modoDemo
-        ? "Atenção: isto é uma demonstração e nenhum e-mail foi enviado. Para contato real, escreva para yuricabral08@gmail.com."
-        : "Obrigado pelo contato! Responderei assim que possível."
-    );
-  } catch (erro) {
-    // Falha: dados preservados, botão volta a ficar utilizável.
-    definirEstado("falha");
-    mostrarStatus(
-      "erro",
-      modoDemo ? "Falha simulada no envio." : "Não foi possível enviar a mensagem.",
-      "Seus dados foram mantidos. Use o botão “Tentar novamente”" +
-        (modoDemo ? ", ou escolha “Simular sucesso” no controle de teste" : "") +
-        ". Se preferir, escreva para yuricabral08@gmail.com."
-    );
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    contactForm.reset();
+    updateOtherSubjectVisibility();
+    updateNameValidity();
+    updateMessageValidity();
+    status.style.color = "#16c75a";
+    status.textContent = "Mensagem enviada! Responderei em breve.";
+  } catch {
+    status.style.color = "#ff6b6b";
+    status.textContent = "Não consegui enviar agora. Escreva direto para yuricabral08@gmail.com.";
+  } finally {
+    submitButton.disabled = false;
   }
 });
+
+const codeText = document.querySelector(".code");
+if (codeText && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const fullCodeText = codeText.textContent.trim();
+  codeText.style.minHeight = `${codeText.offsetHeight}px`;
+  codeText.textContent = "";
+  codeText.classList.add("typing");
+  let characterCount = 0;
+
+  const typeNextCharacters = () => {
+    characterCount += 2;
+    codeText.textContent = fullCodeText.slice(0, characterCount);
+    if (characterCount < fullCodeText.length) setTimeout(typeNextCharacters, 16);
+  };
+  setTimeout(typeNextCharacters, 500);
+}
+
+const copyIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>';
+document.querySelectorAll(".cp").forEach((button) => {
+  button.innerHTML = `${copyIcon}<span>Copiar</span>`;
+  button.addEventListener("click", async () => {
+    const value = button.dataset.c;
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      const temporaryInput = document.createElement("textarea");
+      temporaryInput.value = value;
+      document.body.appendChild(temporaryInput);
+      temporaryInput.select();
+      try {
+        document.execCommand("copy");
+      } catch {}
+      temporaryInput.remove();
+    }
+
+    button.classList.add("ok");
+    button.lastElementChild.textContent = "Copiado!";
+    setTimeout(() => {
+      button.classList.remove("ok");
+      button.lastElementChild.textContent = "Copiar";
+    }, 1600);
+  });
+});
+
+const showSpeech = (creature, text, displayTime = 1500, typingSpeed = 140) => {
+  const token = ++creature.token;
+  creature.speech.textContent = "";
+  creature.speech.classList.add("on");
+  let characterIndex = 0;
+
+  const typeCharacter = () => {
+    if (token !== creature.token) return;
+    creature.speech.textContent = text.slice(0, ++characterIndex);
+    if (characterIndex < text.length) {
+      setTimeout(typeCharacter, typingSpeed);
+    } else {
+      setTimeout(() => {
+        if (token === creature.token) creature.speech.classList.remove("on");
+      }, displayTime);
+    }
+  };
+  typeCharacter();
+};
+
+const creatures = [0, 1, 2].map((index) => {
+  const element = document.createElement("div");
+  element.className = "critter";
+  element.innerHTML = '<div class="say"></div><div class="in"><div class="b"><i class="rg"></i><i class="e l"></i><i class="e r"></i></div><i class="f l"></i><i class="f r"></i></div>';
+  document.body.appendChild(element);
+
+  const creature = {
+    element,
+    character: element.querySelector(".in"),
+    speech: element.querySelector(".say"),
+    x: 80 + Math.random() * Math.max(100, innerWidth - 200),
+    direction: index % 2 ? 1 : -1,
+    speed: 0.5 + Math.random() * 0.8,
+    scaredFrames: 0,
+    idleFrames: 0,
+    token: 0
+  };
+
+  const reactToPointer = (event) => {
+    const pointerX = event.touches ? event.touches[0].clientX : event.clientX;
+    creature.scaredFrames = 150;
+    creature.idleFrames = 0;
+    creature.element.classList.add("scared");
+    creature.element.classList.remove("idle");
+    creature.direction = pointerX < creature.x + 22 ? 1 : -1;
+    showSpeech(creature, "Olá!", 900, 80);
+  };
+
+  creature.character.addEventListener("mouseenter", reactToPointer);
+  creature.character.addEventListener("touchstart", reactToPointer, { passive: true });
+  return creature;
+});
+
+setTimeout(() => showSpeech(creatures[0], "Olá!"), 1500);
+const moveCreatures = () => {
+  creatures.forEach((creature) => {
+    if (creature.scaredFrames > 0) {
+      creature.scaredFrames -= 1;
+      creature.x += creature.direction * 5;
+      if (creature.scaredFrames === 0) creature.element.classList.remove("scared");
+    } else if (creature.idleFrames > 0) {
+      creature.idleFrames -= 1;
+      creature.element.classList.add("idle");
+    } else {
+      creature.element.classList.remove("idle");
+      creature.x += creature.direction * creature.speed;
+      if (Math.random() < 0.004) {
+        creature.idleFrames = 110 + Math.random() * 130;
+        if (Math.random() < 0.6) showSpeech(creature, "Olá!");
+      }
+      if (Math.random() < 0.003) creature.direction *= -1;
+    }
+
+    if (creature.x < 0) {
+      creature.x = 0;
+      creature.direction = 1;
+    }
+    if (creature.x > innerWidth - 44) {
+      creature.x = innerWidth - 44;
+      creature.direction = -1;
+    }
+
+    creature.element.style.transform = `translateX(${creature.x}px)`;
+    creature.character.style.transform = `scaleX(${creature.direction})`;
+  });
+  requestAnimationFrame(moveCreatures);
+};
+requestAnimationFrame(moveCreatures);

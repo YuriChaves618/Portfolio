@@ -1,430 +1,221 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta
-    name="description"
-    content="Portfólio de Yuri Chaves Cabral, estudante de Engenharia de Software, com projetos e conhecimentos em programação e desenvolvimento de software."
-  >
-  <title>Yuri Chaves Cabral | Portfólio</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Yuri Chaves Cabral — Portfólio</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <header>
+    <a href="#home" aria-label="Início">
+      <img class="logo" src="favicon.png" alt="">
+    </a>
 
-  <header id="topo" class="cabecalho">
-    <div class="cabecalho-texto">
-      <h1>Yuri Chaves Cabral</h1>
-      <p class="frase">
-        Estudante de <span class="destaque">Engenharia</span> de Software em busca de <span class="destaque">novos desafios</span> e oportunidades.
-      </p>
-    </div>
-
-    <nav class="menu" aria-label="Menu principal">
-      <a href="#sobre">Sobre mim</a>
-      <a href="#conhecimentos">Conhecimentos</a>
-      <a href="#projetos">Projetos</a>
-      <a href="#contato">Contato</a>
+    <nav aria-label="Navegação principal">
+      <a href="#home">Home</a>
+      <a href="#about">Sobre</a>
+      <a href="#projects">Projetos</a>
+      <a href="#contact">Contato</a>
     </nav>
+
+    <button class="round" id="theme" type="button" aria-label="Alternar tema">☾</button>
   </header>
 
-  <main class="conteudo-principal">
+  <main id="home">
+    <section class="hero" aria-label="Apresentação">
+      <div class="pills">
+        <span class="pill">Estudante de Engenharia de Software</span>
+        <span class="pill">Desenvolvedor Web</span>
+        <span class="pill">Java</span>
+        <span class="pill">JavaScript</span>
+        <span class="pill dark">&lt;/&gt;</span>
+        <span class="pill">React</span>
+        <span class="pill">Estágio</span>
+      </div>
 
-    <section id="sobre" class="secao">
-      <h2>Sobre mim</h2>
+      <h1>YURI CHAVES</h1>
+      <p class="code">const INICIAR = async () =&gt; { const dev = { nome: "Yuri Chaves Cabral", origem: "Salvador_BA", papel: "Estudante_de_Engenharia_de_Software", mentalidade: "Aprender_Construindo" }; await Stack.carregar("HTML", "CSS", "JavaScript", "Java", "React", "PostgreSQL", "MySQL"); if (projeto.ehComplexo) return dev.resolverCom(Logica + Banco_de_Dados + Interface); const missao = "Transformar conhecimento teórico em aplicações funcionais, claras e úteis."; };</p>
 
-      <p>
-        Olá! Meu nome é Yuri Chaves Cabral e sou estudante de
-        Engenharia de Software na Universidade Católica do Salvador (UCSAL).
-        Tenho interesse em tecnologia, programação e desenvolvimento de soluções
-        que possam resolver problemas do cotidiano.
-      </p>
-
-      <p>
-        Durante minha formação, venho desenvolvendo projetos práticos para
-        aprimorar meus conhecimentos em lógica de programação, desenvolvimento
-        web, programação orientada a objetos e bancos de dados.
-        Busco evoluir continuamente, aprender novas tecnologias e transformar
-        conhecimentos teóricos em aplicações funcionais.
-      </p>
-
-      <h2> Informações Técnicas </h2>
-
-      <p>
-        <strong>Curso:</strong>
-        Engenharia de Software — segundo semestre.
-      </p>
-
-      <p>
-        <strong>Interesses profissionais:</strong>
-        Desenvolvimento de software, desenvolvimento web, programação,
-        bancos de dados e criação de interfaces.
-      </p>
-
-      <p>
-        <strong>Objetivo deste portfólio:</strong>
-        Apresentar meus projetos, compartilhar minha evolução acadêmica
-        e profissional e facilitar o contato com pessoas e empresas
-        interessadas em tecnologia.
-      </p>
-    </section>
-
-    <section id="conhecimentos" class="secao">
-      <h2>Conhecimentos</h2>
-
-      <p>
-        Tecnologias e conceitos que venho estudando e aplicando
-        em atividades acadêmicas e projetos práticos:
-      </p>
-
-      <ul class="lista-conhecimentos">
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>Flexbox</li>
-        <li>JavaScript</li>
-        <li>Java</li>
-        <li>C</li>
-        <li>C++</li>
-        <li>PostgreSQL</li>
-        <li>MySQL</li>
-        <li>React</li>
-        <li>Git</li>
-        <li>GitHub</li>
-        <li>Programação orientada a objetos</li>
-        <li>Lógica de programação</li>
-      </ul>
-
-      <table class="tabela-habilidades">
-        <caption>Resumo dos meus conhecimentos</caption>
-
-        <thead>
-          <tr>
-            <th scope="col">Tecnologia</th>
-            <th scope="col">Nível</th>
-            <th scope="col">Aplicação</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>HTML</td>
-            <td>Intermediário</td>
-            <td>Estruturação de páginas web</td>
-          </tr>
-
-          <tr>
-            <td>CSS</td>
-            <td>Intermediário </td>
-            <td>Estilização, layouts e Flexbox</td>
-          </tr>
-
-          <tr>
-            <td>JavaScript</td>
-            <td>Avançado</td>
-            <td>Lógica e interatividade em aplicações web</td>
-          </tr>
-
-          <tr>
-            <td>Java</td>
-            <td>Avançado</td>
-            <td>Programação orientada a objetos e desenvolvimento de aplicações</td>
-          </tr>
-
-          <tr>
-            <td>C</td>
-            <td>Intermediário</td>
-            <td>Lógica de programação e resolução de problemas</td>
-          </tr>
-
-          <tr>
-            <td>C++</td>
-            <td>Intermediário</td>
-            <td>Programação e desenvolvimento de soluções computacionais</td>
-          </tr>
-
-          <tr>
-            <td>PostgreSQL</td>
-            <td>Intermediário</td>
-            <td>Bancos de dados relacionais e consultas SQL</td>
-          </tr>
-
-          <tr>
-            <td>MySQL</td>
-            <td>Intermediário</td>
-            <td>Consultas SQL e gerenciamento de dados</td>
-          </tr>
-
-          <tr>
-            <td>React</td>
-            <td>Iniciante</td>
-            <td>Desenvolvimento de interfaces com componentes</td>
-          </tr>
-
-          <tr>
-            <td>Git e GitHub</td>
-            <td>Avançado</td>
-            <td>Versionamento e organização de projetos</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section id="projetos" class="secao">
-      <h2>Projetos</h2>
-
-      <p>
-        Alguns projetos desenvolvidos durante meus estudos para praticar
-        conceitos de programação e desenvolvimento de software.
-      </p>
-
-      <div class="cards-projetos">
-
-
-        <article class="card">
-            <h3>Sistema de RH</h3>
-          
-            <p>
-              Aplicação desktop desenvolvida em Java para o gerenciamento
-              de funcionários e seus respectivos dependentes, facilitando
-              a organização e a consulta de informações.
-            </p>
-          
-            <p class="tecnologias">
-              <strong>Tecnologias:</strong> Java, Java Swing, MYSQL e programação orientada a objetos.
-            </p>
-          
-            <a
-              href="https://github.com/YuriChaves618/Sistema-de-RH.git"
-              class="botao"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver projeto
-            </a>
-          </article>
-          
-          <article class="card">
-            <h3>Consulta de CEP</h3>
-          
-            <p>
-              Aplicação web desenvolvida em JavaScript que integra uma API
-              dos Correios para consultar o endereço associado a um CEP,
-              apresentando informações como logradouro, bairro, cidade e estado.
-            </p>
-          
-            <p class="tecnologias">
-              <strong>Tecnologias:</strong> HTML, CSS, JavaScript e API.
-            </p>
-          
-            <a
-              href="https://github.com/YuriChaves618/Atividade-API.git"
-              class="botao"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver projeto
-            </a>
-          </article>
-          
-          <article class="card">
-            <h3>Controle de Evento</h3>
-          
-            <p>
-              Aplicação web desenvolvida com React para gerenciar participantes
-              de um evento de tecnologia aberto ao público, contribuindo para
-              a organização e o controle das inscrições.
-            </p>
-          
-            <p class="tecnologias">
-              <strong>Tecnologias:</strong> React, JavaScript, HTML e CSS.
-            </p>
-          
-            <a
-              href="https://github.com/YuriChaves618/Lista-Controle-De-Evento.git"
-              class="botao"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver projeto
-            </a>
-          </article>
+      <div class="bar">
+        <div><span class="dot"></span><b>DISPONÍVEL PARA ESTÁGIO</b></div>
+        <div>SALVADOR, BAHIA — BR</div>
+        <div><b>HOJE:</b> <span id="today"></span></div>
+        <div>↓ ROLE PARA EXPLORAR</div>
       </div>
     </section>
 
-    <section id="contato" class="secao">
-      <h2>Contato</h2>
+    <section id="about">
+      <div class="wrap">
+        <h2>Sobre mim</h2>
 
-      <p>
-        Tem interesse em conversar sobre tecnologia, projetos ou
-        oportunidades profissionais? Entre em contato comigo.
-      </p>
+        <div class="grid">
+          <div class="card">
+            <h3>Olá, eu sou Yuri Chaves Cabral.</h3>
+            <p>Sou estudante de Engenharia de Software na Universidade Católica de Salvador (UCSAL), com interesse em tecnologia, programação e no desenvolvimento de soluções que resolvam problemas do cotidiano.</p>
+            <p>Durante minha formação, venho desenvolvendo projetos práticos para aprimorar lógica de programação, desenvolvimento web, programação orientada a objetos e bancos de dados. Busco evoluir continuamente, aprender novas tecnologias e transformar conhecimento teórico em aplicações funcionais.</p>
+            <p><b>Objetivo deste portfólio:</b> apresentar meus projetos, compartilhar minha evolução acadêmica e profissional e facilitar o contato com pessoas e empresas interessadas em tecnologia.</p>
+          </div>
 
-      <div class="aviso-demo" id="aviso-demo">
-        <p>
-          <strong>Formulário em modo de demonstração.</strong>
-          Ele simula o envio e <strong>nenhum e-mail é enviado</strong>.
-          Para falar comigo de verdade, escreva para
-          <a href="mailto:yuricabral08@gmail.com">yuricabral08@gmail.com</a>
-          ou use o <a href="https://github.com/YuriChaves618" target="_blank" rel="noopener noreferrer">GitHub</a>.
-        </p>
+          <div class="photo" role="img" aria-label="Espaço reservado para a foto de Yuri Chaves Cabral">
+            <div>
+              <b>FOTO</b>
+              Seu espaço aqui<br>
+              (proporção 3:4 funciona melhor)
+            </div>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="card edu">
+            <div class="eh">
+              <span class="cap" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+                  <path d="M2 9l10-5 10 5-10 5z"></path>
+                  <path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5M22 9v6"></path>
+                </svg>
+              </span>
+              <span class="badge">EM ANDAMENTO</span>
+            </div>
+
+            <p class="inst">⌂ UNIVERSIDADE CATÓLICA DO SALVADOR (UCSAL)</p>
+            <h3 class="course">Engenharia de Software</h3>
+            <p class="lbl">Cursos relevantes:</p>
+            <div class="chips sm">
+              <span class="chip">Desenvolvimento de Sistemas (SENAI CIMATEC)</span>
+              <span class="chip">Formação Front-End (Udemy)</span>
+              <span class="chip">Curso de Inglês (Wizard)</span>
+              <span class="chip">JavaScript Essentials I e II (Cisco Networking Academy)</span>
+            </div>
+
+            <div class="lang">
+              <p class="lbl">Idiomas</p>
+              <div class="lgs">
+                <b>Português<small>BRASIL</small></b>
+                <b>Inglês<small>INTERMEDIÁRIO</small></b>
+              </div>
+            </div>
+          </div>
+
+          <div class="card stack">
+            <div class="sh">
+              <span class="ti">&gt;_</span>
+              <h3>Tech Stack</h3>
+            </div>
+            <div id="stack"></div>
+          </div>
+        </div>
+
+        <div class="focus">
+          <div>
+            <h3>Meu foco</h3>
+            <p>Unir lógica de programação, bancos de dados e interface para criar soluções web e desktop que funcionem de ponta a ponta, do estudo à prática.</p>
+          </div>
+          <div class="chips">
+            <span class="chip">Desenvolvimento de software</span>
+            <span class="chip">Desenvolvimento web</span>
+            <span class="chip">Programação</span>
+            <span class="chip">Bancos de dados</span>
+            <span class="chip">Criação de interfaces</span>
+          </div>
+        </div>
       </div>
-
-      <form id="form-contato" class="formulario" method="post" action="#" novalidate
-            aria-describedby="aviso-demo" data-estado="edicao">
-
-        <div class="campo">
-          <label for="nome">Nome</label>
-          <input
-            type="text"
-            id="nome"
-            name="nome"
-            placeholder="Seu nome"
-            autocomplete="name"
-            required
-            aria-describedby="erro-nome"
-          >
-          <p class="erro-campo" id="erro-nome" hidden></p>
-        </div>
-
-        <div class="campo">
-          <label for="email">E-mail</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="seuemail@exemplo.com"
-            autocomplete="email"
-            required
-            aria-describedby="erro-email"
-          >
-          <p class="erro-campo" id="erro-email" hidden></p>
-        </div>
-
-        <div class="campo">
-          <label for="assunto">Assunto</label>
-          <input
-            type="text"
-            id="assunto"
-            name="assunto"
-            placeholder="Assunto da mensagem"
-            required
-            aria-describedby="erro-assunto"
-          >
-          <p class="erro-campo" id="erro-assunto" hidden></p>
-        </div>
-
-        <div class="campo">
-          <label for="mensagem">Mensagem</label>
-          <textarea
-            id="mensagem"
-            name="mensagem"
-            rows="5"
-            placeholder="Escreva sua mensagem aqui"
-            required
-            aria-describedby="erro-mensagem"
-          ></textarea>
-          <p class="erro-campo" id="erro-mensagem" hidden></p>
-        </div>
-
-        <fieldset class="controle-teste">
-          <legend>Controle de teste da demonstração</legend>
-          <p class="ajuda">Escolha como a simulação deve terminar.</p>
-          <label>
-            <input type="radio" name="resultado-simulado" value="sucesso" checked>
-            Simular sucesso
-          </label>
-          <label>
-            <input type="radio" name="resultado-simulado" value="falha">
-            Simular falha
-          </label>
-        </fieldset>
-
-        <button type="submit" class="botao" id="botao-enviar">
-          Enviar mensagem
-        </button>
-
-        <div id="status-form" class="status" role="status" aria-live="polite" aria-atomic="true"></div>
-
-      </form>
-
-      <p>
-        Você também pode entrar em contato diretamente pelo e-mail
-        <a href="mailto:yuricabral08@gmail.com">yuricabral08@gmail.com</a>
-        ou pelas demais informações na seção de informações complementares.
-      </p>
     </section>
 
+    <section id="projects" class="dark-sec">
+      <div class="wrap">
+        <h2>Projetos<br>selecionados</h2>
+        <p class="project-intro">Soluções funcionais com foco em lógica, consumo de APIs, organização de dados e experiência de uso.</p>
+
+        <div class="project-filter-wrap">
+          <label for="project-filter">Filtrar projetos por tecnologia ou categoria</label>
+          <select id="project-filter" aria-controls="list">
+            <option value="all">Todos</option>
+          </select>
+        </div>
+
+        <div id="list" aria-live="polite" aria-busy="false"></div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="wrap cgrid">
+        <div>
+          <h2>Vamos criar<br>algo juntos?</h2>
+          <p class="contact-intro">Tem interesse em conversar sobre tecnologia, projetos ou oportunidades profissionais? Preencha o formulário ou me escreva direto. Estou aberto a estágio e oportunidades de aprendizado.</p>
+
+          <p class="lbl">E-mail</p>
+          <div class="mail">
+            <a href="mailto:yuricabral08@gmail.com">✉ yuricabral08@gmail.com</a>
+            <button class="cp" type="button" data-c="yuricabral08@gmail.com" aria-label="Copiar e-mail"></button>
+          </div>
+
+          <p class="lbl">Telefone</p>
+          <div class="mail">
+            <a href="tel:+5571996826264">☎ (71) 99682-6264</a>
+            <button class="cp" type="button" data-c="(71) 99682-6264" aria-label="Copiar telefone"></button>
+          </div>
+
+          <p class="lbl">Redes</p>
+          <div class="soc">
+            <a href="https://github.com/YuriChaves618" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 .5a11.5 11.5 0 00-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 015.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0012 .5z"></path>
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/yr_.chavez" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                <circle cx="12" cy="12" r="4"></circle>
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <form id="f">
+          <div class="r2">
+            <label for="contact-name">Seu nome
+              <input id="contact-name" name="n" type="text" autocomplete="name" required placeholder="Seu nome">
+            </label>
+            <label for="contact-email">Seu e-mail
+              <input id="contact-email" name="e" type="email" autocomplete="email" required placeholder="voce@exemplo.com">
+            </label>
+          </div>
+
+          <label for="contact-reason">Motivo do contato
+            <select id="contact-reason" name="reason" required>
+              <option value="">Selecione um motivo</option>
+              <option value="Oportunidade profissional">Oportunidade profissional</option>
+              <option value="Projeto freelance">Projeto freelance</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </label>
+
+          <div id="other-subject-field" hidden>
+            <label for="other-subject">Assunto adicional
+              <input id="other-subject" name="subjectAdditional" type="text" disabled placeholder="Descreva o assunto">
+            </label>
+          </div>
+
+          <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <label for="contact-message">Mensagem
+            <textarea id="contact-message" name="m" rows="6" required placeholder="Conte sobre seu projeto..."></textarea>
+            <small class="message-count" id="message-counter" aria-live="polite">0 / 1000 caracteres</small>
+          </label>
+
+          <button class="btn submit-button" type="submit">Enviar mensagem ➤</button>
+          <small class="contact-status" id="ok" role="status" aria-live="polite"></small>
+        </form>
+      </div>
+    </section>
   </main>
 
-  <aside id="complementar" class="complementar">
-    <h2>Informações complementares</h2>
-
-    <ul>
-      <li>
-        <strong>Localização:</strong> Salvador, Bahia, Brasil
-      </li>
-
-      <li>
-        <strong>Instituição:</strong>
-        Universidade Católica do Salvador (UCSAL)
-      </li>
-
-      <li>
-        <strong>Curso:</strong> Engenharia de Software
-      </li>
-
-      <li>
-        <strong>Formação complementar:</strong>
-        Desenvolvimento de Sistemas — SENAI CIMATEC (em conclusão)
-      </li>
-      
-      <li>
-        <strong>Idioma complementar:</strong> Inglês avançado
-      </li>
-
-      <li>
-        <strong>Disponibilidade:</strong>
-        Estágio e oportunidades de aprendizado
-      </li>
-
-      <li>
-        <strong>GitHub:</strong>
-        <a
-          href="https://github.com/YuriChaves618"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Acessar perfil
-        </a>
-      </li>
-
-      
-      <li>
-        <strong>Email de contato:</strong>
-        <a href="mailto:yuricabral08@gmail.com">yuricabral08@gmail.com</a>
-      </li>
-
-      <li>
-        <strong>Telefone de contato:</strong>(71)996826264
-      </li>
-    </ul>
-  </aside>
-
- 
-  <footer class="rodape">
-    <p>
-      &copy; 2026 Yuri Chaves Cabral. Todos os direitos reservados.
-    </p>
-
-    <p>
-      Desenvolvido com HTML, CSS e JavaScript.
-    </p>
-
-    <p>
-      <a href="#topo">Voltar ao topo</a>
-    </p>
-  </footer>
+  <footer>© 2026 Yuri Chaves Cabral · Salvador, Bahia, Brasil · Feito com HTML, CSS e JavaScript</footer>
 
   <script src="script.js"></script>
 </body>

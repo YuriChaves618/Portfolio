@@ -167,6 +167,25 @@ const renderProjects = () => {
 projectFilter.addEventListener("change", renderProjects);
 renderProjects();
 
+const menuToggle = document.getElementById("menu-toggle");
+const primaryNav = document.getElementById("primary-nav");
+const setMenuOpen = (isOpen) => {
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  menuToggle.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
+  primaryNav.classList.toggle("is-open", isOpen);
+};
+
+menuToggle.addEventListener("click", () => {
+  const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+  setMenuOpen(!isOpen);
+});
+primaryNav.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => setMenuOpen(false));
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") setMenuOpen(false);
+});
+window.matchMedia("(min-width: 761px)").addEventListener("change", () => setMenuOpen(false));
 const today = document.getElementById("today");
 const setDate = () => {
   today.textContent = new Date()
@@ -433,7 +452,8 @@ const moveCreatures = () => {
       creature.direction = -1;
     }
 
-    creature.element.style.transform = `translateX(${creature.x}px)`;
+    const scale = innerWidth <= 540 ? 0.72 : 1;
+    creature.element.style.transform = `translateX(${creature.x}px) scale(${scale})`;
     creature.character.style.transform = `scaleX(${creature.direction})`;
   });
   requestAnimationFrame(moveCreatures);

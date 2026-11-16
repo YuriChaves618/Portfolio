@@ -1120,3 +1120,474 @@ input:focus,textarea:focus {
 .contact-status {
   color: #888;
 }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: currentColor;
+  transition: transform .2s, opacity .2s;
+}
+
+.menu-toggle[aria-expanded="true"] span:first-child {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle[aria-expanded="true"] span:last-child {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.menu-toggle:focus-visible,
+.round:focus-visible,
+nav a:focus-visible,
+.project-filter-wrap select:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid #526aff;
+  outline-offset: 3px;
+}
+
+.project-filter-wrap select {
+  max-width: 100%;
+}
+
+.proj > *,
+.grid > *,
+.two > *,
+.cgrid > * {
+  min-width: 0;
+}
+
+.mail a {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 960px) {
+  .proj {
+    gap: 32px;
+    padding: 44px 0;
+  }
+
+  .proj h3 {
+    font-size: clamp(30px, 5vw, 44px);
+  }
+
+  .contact-intro {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  html {
+    scroll-padding-top: 76px;
+  }
+
+  header {
+    min-height: 68px;
+    padding: 10px 18px;
+    gap: 12px;
+  }
+
+  .header-actions {
+    margin-left: auto;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  nav {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 14px;
+    right: 14px;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--bg);
+    box-shadow: 0 12px 30px #0003;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  nav.is-open {
+    display: flex;
+  }
+
+  nav a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+  }
+
+  nav a:hover {
+    background: var(--card);
+    text-decoration: none;
+  }
+
+  .hero {
+    padding-top: 52px;
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 12.5vw, 88px);
+    letter-spacing: -.085em;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: .95;
+    padding: 0 12px;
+  }
+
+  .pills {
+    gap: 8px;
+    padding: 0 16px;
+  }
+
+  .pill {
+    padding: 8px 13px;
+    font-size: 11px;
+  }
+
+  .code {
+    margin: 24px auto 42px;
+    padding: 0 18px;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  .bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    font-size: 12px;
+  }
+
+  .bar div {
+    min-width: 0;
+    padding: 16px 14px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    overflow-wrap: anywhere;
+  }
+
+  .bar div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .bar div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+
+  section {
+    padding: 76px 0;
+  }
+
+  h2 {
+    font-size: clamp(40px, 9vw, 66px);
+    margin-bottom: 34px;
+  }
+
+  .grid,
+  .two,
+  .proj,
+  .cgrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .grid,
+  .two,
+  .cgrid {
+    gap: 20px;
+  }
+
+  .card {
+    padding: 26px;
+    border-radius: 26px;
+  }
+
+  .photo {
+    min-height: 340px;
+    border-radius: 26px;
+  }
+
+  .proj {
+    gap: 24px;
+    padding: 36px 0;
+  }
+
+  .proj:nth-child(even) .info {
+    order: 0;
+  }
+
+  .proj h3 {
+    font-size: clamp(30px, 8vw, 46px);
+    line-height: 1;
+    overflow-wrap: anywhere;
+  }
+
+  .shot {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px;
+  }
+
+  .shot div {
+    font-size: clamp(26px, 8vw, 44px);
+    overflow-wrap: anywhere;
+  }
+
+  .focus {
+    padding: 28px;
+    border-radius: 26px;
+    align-items: flex-start;
+  }
+
+  .cgrid {
+    gap: 34px;
+  }
+
+  form {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .r2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-filter-wrap select {
+    width: 100%;
+  }
+
+  footer {
+    padding: 24px 18px;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 540px) {
+  .wrap {
+    padding: 0 18px;
+  }
+
+  header {
+    padding-inline: 14px;
+  }
+
+  .hero {
+    padding-top: 42px;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 11.8vw, 58px);
+  }
+
+  .pill {
+    padding: 7px 10px;
+    font-size: 10px;
+  }
+
+  .bar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bar div,
+  .bar div:nth-child(2n) {
+    padding: 13px 18px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bar div:last-child {
+    border-bottom: 0;
+  }
+
+  section {
+    padding: 64px 0;
+  }
+
+  h2 {
+    font-size: clamp(38px, 10vw, 52px);
+    margin-bottom: 28px;
+  }
+
+  .card {
+    padding: 22px;
+  }
+
+  .card h3 {
+    font-size: 22px;
+    line-height: 1.05;
+  }
+
+  .chips {
+    gap: 7px;
+  }
+
+  .chip {
+    font-size: 12px;
+    padding: 6px 10px;
+    overflow-wrap: anywhere;
+  }
+
+  .focus {
+    padding: 22px;
+  }
+
+  .proj {
+    padding: 30px 0;
+  }
+
+  .tag {
+    font-size: 9px;
+    line-height: 1.5;
+    max-width: 100%;
+  }
+
+  .proj p,
+  .contact-intro {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .btn {
+    min-height: 46px;
+    padding: 12px 18px;
+    font-size: 11px;
+  }
+
+  .shot i {
+    overflow-wrap: anywhere;
+    font-size: 10px;
+  }
+
+  form {
+    padding: 20px 16px;
+    gap: 14px;
+  }
+
+  .mail {
+    width: 100%;
+    padding: 13px 14px;
+    gap: 9px;
+    font-size: 14px;
+  }
+
+  .cp {
+    padding: 8px;
+    font-size: 0;
+  }
+
+  .cp svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .soc a {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 360px) {
+  .wrap {
+    padding: 0 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(34px, 10.8vw, 42px);
+  }
+
+  .pills {
+    padding-inline: 12px;
+  }
+
+  .pill {
+    font-size: 9px;
+    padding: 6px 8px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .photo {
+    min-height: 280px;
+  }
+
+  .eh {
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .badge {
+    font-size: 9px;
+    padding: 5px 9px;
+  }
+
+  .lgs {
+    gap: 16px;
+  }
+
+  .lgs b {
+    font-size: 19px;
+  }
+
+  .project-filter-wrap label {
+    line-height: 1.4;
+  }
+}
+input,
+textarea,
+#f select {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 540px) {
+  .bar div:nth-last-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bar div:last-child {
+    border-bottom: 0;
+  }
+}
+
+@media (hover: none) {
+  .critter .in {
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
